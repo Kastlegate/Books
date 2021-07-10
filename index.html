@@ -8,25 +8,31 @@
   
 </head>
 <body>
+  <button id="addBookFormButton">Add a New Book</button>
   <div id="display"></div>
+
+  <!-- display for the book "Cards" -->
+  <div id="cardDisplay" ></div>
+  
+  <!-- The form to add new books -->
   <form id="form">
-    <div id="container">
-        <label for="title" id="title-label">Title</label><br>
-        <input type="text" id="title" placeholder="Enter the Title of the Book" required>
-        <br>
-        <label for="author" id="author-label">Author</label><br>
-        <input type="text" id="author" placeholder="Enter the Author's Name" required>
-        <br>
-        <label for="pages" id="pages-label">Number of Pages</label><br>
-        <input type="number" id="pages" placeholder="Enter the Page Count" required>
-        <br>
-        <label for="read" id="read-label">Have you read this Book?</label><br>
-        <input type="text" id="read" placeholder="Yes or No." required>
-        <button id="addThisBook">Add Book</button>
-        <button id="cancel">Cancel</button>
+  <div id="container">
+      <label for="title" id="title-label">Title</label><br>
+      <input type="text" id="title" placeholder="Enter the Title of the Book" required>
+      <br>
+      <label for="author" id="author-label">Author</label><br>
+      <input type="text" id="author" placeholder="Enter the Author's Name" required>
+      <br>
+      <label for="pages" id="pages-label">Number of Pages</label><br>
+      <input type="number" id="pages" placeholder="Enter the Page Count" required>
+      <br>
+      <label for="read" id="read-label">Have you read this Book?</label><br>
+      <input type="text" id="read" placeholder="Yes or No." required>
+      <input type="button" id="addThisBookButton" value="Add Book"></button>
+      <button id="cancelButton">Cancel</button>
     </div>
   </form>
-  <button id="addBook">Add a New Book</button>
+  
   
   <script src="books.js"></script> 
 

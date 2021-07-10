@@ -1,61 +1,124 @@
 
-let addBookButton = document.getElementById("addBook");
-let cancelButton = document.getElementById("cancel");
+let addBookFormButton = document.getElementById("addBookFormButton");
+let cancelButton = document.getElementById("cancelButton");
+let addThisBookButton = document.getElementById("addThisBookButton");
+let cardDisplay = document.getElementById("cardDisplay");
+var newline = "\n";
 
-//hides the new book form on initial load
+
+// hides the new book form on initial page load
 document.getElementById("form").style.display = 'none';
 
 // an object contructor to create different books in a Library
-function Book(title, author, pages, read)
+function Book(title, author, pages, read, index)
 {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
-
-    // adding the info() function here will cause every object to recreate this function when the objects are made
-    // moving it outside the constructor, and adding it to the objects prototype like done below, means the code only has to be ran once
-    // and all objects created by the contructor automatically inherit the function, making the code run faster
-
-    // this.info = function()
-    // {
-    //     return this.title + " by " + this.author +  ". " + this.pages + " pages. " + this.read
-    // }
+    this.index = index;
 }
 
 // function to bring up the form when the add new book button is pressed
-function addBookButtonClicked()
-{
-    console.log("Add Book Button Pressed")
-    
-    //shows the form
-    document.getElementById("form").style.display = 'inline'
-
-    //hides the add new book button
-    document.getElementById("addBook").style.display = 'none'
+function addBookFormButtonClicked()
+{    
+    // shows the form and buttons
+    document.getElementById("form").style.display = 'inline';  
+    document.getElementById("addBookFormButton").style.display = 'none'
 }
 
-//creating event listeners for buttons
-addBookButton.addEventListener("click", addBookButtonClicked); 
+// function for the form button addThisBookButton, that takes the information inside the form and creates
+// a new book with it
+function addThisBookButtonClicked()
+{
+    if (document.getElementById("title").value == "" || document.getElementById("author").value == "" || 
+    document.getElementById("pages").value == "" || document.getElementById("read").value == "")
+    {
+        alert("Please fill out all fields in the form");
+    }
 
-//creating a couple of default book pbjects with the Book object constructor
-const book1 = new Book("The Lord of The Rings", "J.R.R. Tolkien", "356", "Has been read.");
+    else 
+    {
+        //inputs the values from the form into the function to add a new book
+        addBookToLibrary(document.getElementById("title").value, document.getElementById("author").value, 
+        document.getElementById("pages").value, document.getElementById("read").value);
+
+        //updates the html with the new book added
+        document.getElementById("cardDisplay").textContent = "";
+        document.getElementById("display").textContent = addNewCard(myLibrary);
+        console.log(myLibrary)
+
+        //resets the state of the form, its entries, and the add book button back to their default states after adding a book
+        document.getElementById("title").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("pages").value = "";
+        document.getElementById("read").value = "";
+        document.getElementById("form").style.display = 'none';
+        document.getElementById("addBookFormButton").style.display = 'inline'
+        
+    }
+}
+
+function cancelButtonClicked()
+{
+    document.getElementById("title").value = "";
+    document.getElementById("author").value = "";
+    document.getElementById("pages").value = "";
+    document.getElementById("read").value = "";
+    document.getElementById("form").style.display = 'none';
+    document.getElementById("addBookFormButton").style.display = 'inline'
+    
+}
+
+// creating event listeners for buttons
+addBookFormButton.addEventListener("click", addBookFormButtonClicked);
+addThisBookButton.addEventListener("click", addThisBookButtonClicked);
+cancelButton.addEventListener("click", cancelButtonClicked);
+
+
+
+// creating a couple of default book objects with the Book object constructor
+const book1 = new Book("The Fellowship of The Ring", "J.R.R. Tolkien", "356", "Has been read.");
 const book2 = new Book("A song of Ice and Fire", "George R.R. Martin", "256", "Has not been read.");
 
-//creates an array for the library and populates it with the default book objects
+// creates an array for the library and populates it with the default book objects
 let myLibrary = [book1, book2];
 
-//adds the info function to the Book contructor's prototype. This function returns each value in the current book object
+//function creating a new div element ("card") with the myLibrary array and appending it to display in html
+
+function addNewCard(array)
+{
+    array.forEach(element =>
+    {
+        let newCard = document.createElement("div");
+        newCard.class = "card";
+        newCard.textContent = "Title: " + element.title + newline + "Author: " + element.author + newline + "Page count: " + element.pages + newline + element.read;
+        cardDisplay.appendChild(newCard).className = 'card';
+        let removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.dataset.id = element.id;
+        newCard.appendChild(removeButton);
+
+    })
+    
+};
+
+// + <br></br> + "element.author" + <br></br> + <button class="removeButton" data-id="myLibrary(element)" >Remove</button>;
+
+// adds the info function to the Book contructor's prototype. This function returns each value in the current book object. 
+// The function being added to the prototype avoids each object (book) creating the functions
+// everytime a new object (book in this example) is created. This will increase performance if there are thousands
+// of objects being created and they are simply inheriting and not recreating this function each time.
 Book.prototype.info = function()
 {
      return this.title + " by " + this.author +  ". " + this.pages + " pages. " + this.read;
 }
 
-// function addBookToLibrary() 
-// {
-//     let newBook = new Book(title, author, pages, read);
-//     myLibrary.push(newBook);
-// } 
+function addBookToLibrary(title, author, pages, read, index) 
+{
+    let newBook = new Book(title, author, pages, read, index);
+    myLibrary.push(newBook);
+} 
 
 function displayLibrary()
 {
@@ -69,7 +132,5 @@ function displayLibrary()
     return libraryDisplay;
 }
 
-document.getElementById("display").innerHTML = displayLibrary();
+document.getElementById("display").textContent = addNewCard(myLibrary);
 // addBookToLibrary()
-console.log(book1.info());
-console.log(book2.info());

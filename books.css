@@ -2,8 +2,19 @@ body{
     /* background-color: rgb(195, 227, 247); */
 }
 
+#addBookFormButton{
+    position:absolute;
+    left: 90%;
+}
+
 #form{
     width: fit-content;
+    position:absolute;
+    top:10%;
+    left:40%;
+    box-shadow: 10px 10px 10px #333;
+    /* margin: auto; */
+    
 }
 
 #container{
@@ -13,4 +24,19 @@ body{
     padding: 1em;
     border-style: solid;
     border-width: 1px;
+}
+
+#cardDisplay{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+.card{
+    border-style: solid;
+    white-space: pre;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 10px;
 }
