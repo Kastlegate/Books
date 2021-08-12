@@ -59,10 +59,10 @@ p{
 }
 
 .removeButton{
-    position: absolute;
+    /* position: absolute;
     align-self: center;
     bottom:   0;
-    left: 70%;
+    left: 70%; */
     /* border-radius: 50%; */
     background-color: rgb(188, 220, 241);
     padding: 5;
@@ -72,6 +72,19 @@ p{
 
 }
 
-label{
+/* label{
     margin-left: -123px;
+} */
+
+#read{
+    width: 185px;
+    margin-bottom: 8px;
+}
+
+.cardMenu{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    align-self: center;
+    bottom:   0;
 }

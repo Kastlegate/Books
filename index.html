@@ -26,8 +26,17 @@
       <label for="pages" id="pages-label">Number of Pages</label><br>
       <input type="number" id="pages" placeholder="Enter the Page Count" required>
       <br>
-      <label for="read" id="read-label">Have you read this Book?</label><br>
-      <input type="text" id="read" placeholder="Yes or No." required>
+      <!-- <label for="read" id="read-label">Have you read this Book?</label><br>
+      <input type="text" id="read" placeholder="Yes or No." required> -->
+      
+      <label for="read">Read this book?</label>
+      <br>
+      <select name="read" id="read">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+      <br>
+
       <input type="button" id="addThisBookButton" value="Add Book"></button>
       <button id="cancelButton">Cancel</button>
     </div>

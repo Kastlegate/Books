@@ -23,8 +23,8 @@ function Book(title, author, pages, read)
 }
 
 // creating a couple of default book objects with the Book object constructor
-const book1 = new Book("The Fellowship of The Ring", "J.R.R. Tolkien", "356", "Has been read.");
-const book2 = new Book("A Song of Ice and Fire", "George R.R. Martin", "256", "Has not been read.");
+const book1 = new Book("The Fellowship of The Ring", "J.R.R. Tolkien", "356", "Yes");
+const book2 = new Book("A Song of Ice and Fire", "George R.R. Martin", "256", "No");
 
 
 // if statement that checks if the local storage contains a "library" string and, if so, populates
@@ -114,6 +114,21 @@ function removeButtonClicked()
     console.log(myLibrary);
 }
 
+
+function radioButtonYesClicked()
+{
+    let index = this.getAttribute("data-radioid");
+    myLibrary[index].read = "Yes";
+    localStorage.setItem('library', JSON.stringify(myLibrary))
+}
+
+function radioButtonNoClicked()
+{
+    let index = this.getAttribute("data-radioid");
+    myLibrary[index].read = "No";
+    localStorage.setItem('library', JSON.stringify(myLibrary))
+}
+
 // creating event listeners for buttons
 addBookFormButton.addEventListener("click", addBookFormButtonClicked);
 addThisBookButton.addEventListener("click", addThisBookButtonClicked);
@@ -150,62 +165,75 @@ function addNewCard(array)
         // Creating read yet
         let read = document.createElement("p");
         read.textContent = "Has been read: " + element.read;
-        newCard.appendChild(read);
-        
-        // newCard.textContent = "Title: " + element.title + newline + "Author: " + 
-        // element.author + newline + "Page count: " + element.pages + newline + element.read;
-        
+        newCard.appendChild(read);        
 
         // adds the new card to the cardDisplay div
         cardDisplay.appendChild(newCard).className = 'card';
 
-        // creates the button for the card and fills in its text
-        let removeButton = document.createElement("button");
-        removeButton.classList.add("removeButton");
-        removeButton.textContent = "Delete Book";
-        removeButton.dataset.buttonid = array.indexOf(element);
-        newCard.appendChild(removeButton);
+        let cardMenu = document.createElement("div");
+        cardMenu.classList.add("cardMenu");
+        cardMenu.dataset.menuid = cardMenu;
+        newCard.appendChild(cardMenu)
 
-        // creates and event listener for the newly created remove buttons
-        removeButton.addEventListener("click", removeButtonClicked);
-        // adds the myLibrary array into local storage as the string "library"
-        localStorage.setItem('library', JSON.stringify(myLibrary));
-
-        // creates a set of radio buttons to check if this book has been read or not
+        // creating a set of radio buttons to check if this book has been read or not
         let bookReadRadioYes = document.createElement("INPUT");
         bookReadRadioYes.setAttribute("type", "radio");
         bookReadRadioYes.classList.add("bookReadRadio");
         bookReadRadioYes.dataset.radioid = array.indexOf(element);
         bookReadRadioYes.setAttribute('id', "radioYes");
-        bookReadRadioYes.setAttribute('value', "radioYes");
+        bookReadRadioYes.setAttribute('value', "Yes");
         let radioGroup = array.indexOf(element);
         bookReadRadioYes.setAttribute('name', radioGroup);
-        newCard.appendChild(bookReadRadioYes);
+        cardMenu.appendChild(bookReadRadioYes);
         //creates a label for the yes radio button
         let labelForYes = document.createElement('label');
         labelForYes.setAttribute('for', 'radioYes');
         labelForYes.innerHTML = "Yes";
-        newCard.appendChild(labelForYes);
+        cardMenu.appendChild(labelForYes);
 
-
+        //creates the no radio button
         let bookReadRadioNo = document.createElement("INPUT");
         bookReadRadioNo.setAttribute("type", "radio");
         bookReadRadioNo.classList.add("bookReadRadio");
         bookReadRadioNo.dataset.radioid = array.indexOf(element);
         bookReadRadioNo.setAttribute('id', "radioNo");
-        bookReadRadioNo.setAttribute('value', "radioNo");
+        bookReadRadioNo.setAttribute('value', "No");
         bookReadRadioNo.setAttribute('name', radioGroup);
-        newCard.appendChild(bookReadRadioNo);
+        cardMenu.appendChild(bookReadRadioNo);
 
         let labelForNo = document.createElement('label');
-        labelForNo.setAttribute('for', 'radioYes');
+        labelForNo.setAttribute('for', 'radioNo');
         labelForNo.innerHTML = "No";
-        newCard.appendChild(labelForNo);
+        cardMenu.appendChild(labelForNo);
 
-        
-        
+        // creates the delete button for the card and fills in its text
+        let removeButton = document.createElement("button");
+        removeButton.classList.add("removeButton");
+        removeButton.textContent = "Delete Book";
+        removeButton.dataset.buttonid = array.indexOf(element);
+        cardMenu.appendChild(removeButton);
 
-        console.log(localStorage.getItem('library'))
+        // creates and event listener for the newly created remove buttons
+        removeButton.addEventListener("click", removeButtonClicked);
+
+        bookReadRadioYes.addEventListener("click", radioButtonYesClicked)
+        bookReadRadioNo.addEventListener("click", radioButtonNoClicked)
+        // adds the myLibrary array into local storage as the string "library"
+        localStorage.setItem('library', JSON.stringify(myLibrary));
+
+        // sets the initial state for the read radio buttons from the entered form
+        if (element.read == "No")
+        {
+            bookReadRadioNo.checked = true;
+        }
+        if (element.read == "Yes")
+        {
+            bookReadRadioYes.checked = true;
+        }
+
+
+
+        // console.log(localStorage.getItem('library'))
         
 
      })
