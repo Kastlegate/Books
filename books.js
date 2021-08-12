@@ -5,6 +5,9 @@ let addThisBookButton = document.getElementById("addThisBookButton");
 let cardDisplay = document.getElementById("cardDisplay");
 const newline = "\n";
 const removeButton = document.getElementById("removeButton");
+// creates an array for the library
+let myLibrary = [];
+
 
 
 // hides the new book form on initial page load
@@ -21,10 +24,22 @@ function Book(title, author, pages, read)
 
 // creating a couple of default book objects with the Book object constructor
 const book1 = new Book("The Fellowship of The Ring", "J.R.R. Tolkien", "356", "Has been read.");
-const book2 = new Book("A song of Ice and Fire", "George R.R. Martin", "256", "Has not been read.");
+const book2 = new Book("A Song of Ice and Fire", "George R.R. Martin", "256", "Has not been read.");
 
-// creates an array for the library and populates it with the default book objects
-let myLibrary = [book1, book2];
+
+// if statement that checks if the local storage contains a "library" string and, if so, populates
+// uses it to fill the library array. If not, it populates the array with the 2 default books
+if (localStorage.getItem('library'))
+{
+    myLibrary = JSON.parse(window.localStorage.getItem('library'));
+}
+
+else
+{
+    // creates an array for the library and populates it with the default book objects
+    myLibrary = [book1, book2];
+}
+
 
 // function to bring up the form when the add new book button is pressed
 function addBookFormButtonClicked()
@@ -66,6 +81,7 @@ function addThisBookButtonClicked()
     }
 }
 
+// function for the cancel button pressed
 function cancelButtonClicked()
 {
     document.getElementById("title").value = "";
@@ -77,18 +93,22 @@ function cancelButtonClicked()
     
 }
 
+// creates a function that takes an argument, the button's data attribute, and uses it to delete the matching array index
 function deleteBook(bookToDelete)
 {
     let index = bookToDelete;
     if (index > -1) {
     myLibrary.splice(index, 1);}
+    //copies the myLibrary array to the library string in local storage
+    localStorage.setItem('library', JSON.stringify(myLibrary))
 }
 
 // creates a function to remove a particular book when the remove button is pressed
 function removeButtonClicked()
 {
-    console.log(this.getAttribute("data-buttonid"))
+    //calls the delete book function and adds the button id attribute that matches the array item to delete
     deleteBook(this.getAttribute("data-buttonid"))
+    //removes the cardDisplay's elements and displays the updated library
     document.getElementById("cardDisplay").textContent = "";
     document.getElementById("display").textContent = addNewCard(myLibrary);
     console.log(myLibrary);
@@ -101,8 +121,7 @@ cancelButton.addEventListener("click", cancelButtonClicked);
 
 
 
-//function creating a new div element ("card") with the myLibrary array and appending it to display in html
-
+//function creating new div elements ("card") with the myLibrary array and appending it to display in html
 function addNewCard(array)
 {
     array.forEach(element =>
@@ -112,18 +131,82 @@ function addNewCard(array)
         let newCard = document.createElement("div");
         newCard.class = "card";
         newCard.dataset.id = array.indexOf(element);
-        newCard.textContent = "Title: " + element.title + newline + "Author: " + 
-        element.author + newline + "Page count: " + element.pages + newline + element.read;
+
+        //creating the title
+        let title = document.createElement("h3");
+        title.textContent = element.title;
+        newCard.appendChild(title);
+
+        // Creating the Author 
+        let author = document.createElement("p");
+        author.textContent = "By: " + element.author;
+        newCard.appendChild(author);
+
+        // Creating the Page count 
+        let pages = document.createElement("p");
+        pages.textContent = "Number of pages: " + element.pages;
+        newCard.appendChild(pages);
+
+        // Creating read yet
+        let read = document.createElement("p");
+        read.textContent = "Has been read: " + element.read;
+        newCard.appendChild(read);
+        
+        // newCard.textContent = "Title: " + element.title + newline + "Author: " + 
+        // element.author + newline + "Page count: " + element.pages + newline + element.read;
+        
 
         // adds the new card to the cardDisplay div
         cardDisplay.appendChild(newCard).className = 'card';
 
         // creates the button for the card and fills in its text
         let removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
+        removeButton.classList.add("removeButton");
+        removeButton.textContent = "Delete Book";
         removeButton.dataset.buttonid = array.indexOf(element);
         newCard.appendChild(removeButton);
+
+        // creates and event listener for the newly created remove buttons
         removeButton.addEventListener("click", removeButtonClicked);
+        // adds the myLibrary array into local storage as the string "library"
+        localStorage.setItem('library', JSON.stringify(myLibrary));
+
+        // creates a set of radio buttons to check if this book has been read or not
+        let bookReadRadioYes = document.createElement("INPUT");
+        bookReadRadioYes.setAttribute("type", "radio");
+        bookReadRadioYes.classList.add("bookReadRadio");
+        bookReadRadioYes.dataset.radioid = array.indexOf(element);
+        bookReadRadioYes.setAttribute('id', "radioYes");
+        bookReadRadioYes.setAttribute('value', "radioYes");
+        let radioGroup = array.indexOf(element);
+        bookReadRadioYes.setAttribute('name', radioGroup);
+        newCard.appendChild(bookReadRadioYes);
+        //creates a label for the yes radio button
+        let labelForYes = document.createElement('label');
+        labelForYes.setAttribute('for', 'radioYes');
+        labelForYes.innerHTML = "Yes";
+        newCard.appendChild(labelForYes);
+
+
+        let bookReadRadioNo = document.createElement("INPUT");
+        bookReadRadioNo.setAttribute("type", "radio");
+        bookReadRadioNo.classList.add("bookReadRadio");
+        bookReadRadioNo.dataset.radioid = array.indexOf(element);
+        bookReadRadioNo.setAttribute('id', "radioNo");
+        bookReadRadioNo.setAttribute('value', "radioNo");
+        bookReadRadioNo.setAttribute('name', radioGroup);
+        newCard.appendChild(bookReadRadioNo);
+
+        let labelForNo = document.createElement('label');
+        labelForNo.setAttribute('for', 'radioYes');
+        labelForNo.innerHTML = "No";
+        newCard.appendChild(labelForNo);
+
+        
+        
+
+        console.log(localStorage.getItem('library'))
+        
 
      })
     
@@ -140,12 +223,16 @@ Book.prototype.info = function()
      return this.title + " by " + this.author +  ". " + this.pages + " pages. " + this.read;
 }
 
+
+// creates a function that takes the attributes for a book, adds
+// them to a new 'book' object, then adds that object to the array
 function addBookToLibrary(title, author, pages, read) 
 {
     let newBook = new Book(title, author, pages, read);
     myLibrary.push(newBook);
 } 
 
+// runs through the library array and displays the library
 function displayLibrary()
 {
     let libraryDisplay = "";
@@ -158,5 +245,41 @@ function displayLibrary()
     return libraryDisplay;
 }
 
+// checks to see if local storage is available
+function storageAvailable(type) {
+    var storage;
+    try {
+        storage = window[type];
+        var x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+}
+
+if (storageAvailable('localStorage')) {
+    console.log("Local storage is available");
+  }
+  else {
+    console.log("Local storage is not available");
+  }
+
+
+// does the intial display for the library
 document.getElementById("display").textContent = addNewCard(myLibrary);
+//localStorage.removeItem('library') 
 

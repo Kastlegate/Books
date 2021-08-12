@@ -1,5 +1,5 @@
 body{
-    /* background-color: rgb(195, 227, 247); */
+    background-color: rgb(171, 205, 209);
 }
 
 #addBookFormButton{
@@ -17,6 +17,10 @@ body{
     
 }
 
+/* h3{
+    text-align: center;
+} */
+
 #container{
     background-color: lightskyblue;
     margin: 0 auto;
@@ -29,14 +33,45 @@ body{
 #cardDisplay{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     margin: 10px;
+    flex-basis: 33.333333%;
 }
 
 .card{
-    border-style: solid;
-    white-space: pre;
+    border-style: ridge;
+    /* white-space: pre; */
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 50px;
+    height: 150px;
     margin: 10px;
+    width: 250px;
+    text-align: center;
+    position: relative;
+    background-color: rgb(216, 230, 241);
+    
+}
+
+p{
+     margin-bottom: -15px;
+     font-size: 13px;
+}
+
+.removeButton{
+    position: absolute;
+    align-self: center;
+    bottom:   0;
+    left: 70%;
+    /* border-radius: 50%; */
+    background-color: rgb(188, 220, 241);
+    padding: 5;
+}
+
+.bookReadRadio{
+
+}
+
+label{
+    margin-left: -123px;
 }
