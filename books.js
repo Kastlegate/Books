@@ -114,19 +114,28 @@ function removeButtonClicked()
     console.log(myLibrary);
 }
 
-
+// function for when the yes radio button is pressed
 function radioButtonYesClicked()
 {
     let index = this.getAttribute("data-radioid");
     myLibrary[index].read = "Yes";
     localStorage.setItem('library', JSON.stringify(myLibrary))
+
+    
+    document.getElementById(index).style.background = "rgb(216, 230, 241)";
+    console.log(document.getElementById(index).style.background)
 }
 
+// function for when the no radio button is pressed
 function radioButtonNoClicked()
 {
     let index = this.getAttribute("data-radioid");
     myLibrary[index].read = "No";
+    
+
+    document.getElementById(index).style.background = "rgb(170, 208, 238)";
     localStorage.setItem('library', JSON.stringify(myLibrary))
+    
 }
 
 // creating event listeners for buttons
@@ -144,7 +153,8 @@ function addNewCard(array)
         // creating a new div in the dom and assigning the card class to it. Then filling out its text with the 
         // information from the current element in the array.
         let newCard = document.createElement("div");
-        newCard.class = "card";
+        newCard.class = "cardRead";
+        newCard.setAttribute('id', array.indexOf(element));
         newCard.dataset.id = array.indexOf(element);
 
         //creating the title
@@ -168,11 +178,11 @@ function addNewCard(array)
         newCard.appendChild(read);        
 
         // adds the new card to the cardDisplay div
-        cardDisplay.appendChild(newCard).className = 'card';
+        cardDisplay.appendChild(newCard).className = 'cardRead';
 
         let cardMenu = document.createElement("div");
         cardMenu.classList.add("cardMenu");
-        cardMenu.dataset.menuid = cardMenu;
+        cardMenu.dataset.menuid = "cardMenu";
         newCard.appendChild(cardMenu)
 
         // creating a set of radio buttons to check if this book has been read or not
@@ -225,10 +235,12 @@ function addNewCard(array)
         if (element.read == "No")
         {
             bookReadRadioNo.checked = true;
+            newCard.style.background = "rgb(170, 208, 238)";
         }
         if (element.read == "Yes")
         {
             bookReadRadioYes.checked = true;
+            newCard.style.background = "rgb(216, 230, 241)";
         }
 
 
@@ -268,7 +280,7 @@ function displayLibrary()
     for(let i = 0; i < myLibrary.length; i++)
     {
         libraryDisplay = libraryDisplay += myLibrary[i].info() + "<br>"
-    }
+    }getAttribute("id")
 
     return libraryDisplay;
 }

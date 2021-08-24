@@ -38,7 +38,7 @@ body{
     flex-basis: 33.333333%;
 }
 
-.card{
+.cardRead{
     border-style: ridge;
     /* white-space: pre; */
     display: flex;
@@ -50,6 +50,21 @@ body{
     text-align: center;
     position: relative;
     background-color: rgb(216, 230, 241);
+    
+}
+
+.cardNotRead{
+    border-style: ridge;
+    /* white-space: pre; */
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    height: 150px;
+    margin: 10px;
+    width: 250px;
+    text-align: center;
+    position: relative;
+    background-color: rgb(170, 208, 238);
     
 }
 
